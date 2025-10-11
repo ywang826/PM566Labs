@@ -1,0 +1,110 @@
+---
+title: "PM566 Lab 3 – Yi Wang"
+output:
+  pdf_document:
+    toc: true
+  html_document:
+    toc: true
+    toc_float: true
+    number_sections: true
+---
+
+```{r}
+met <- read.csv("~/Desktop/met_all.gz")
+```
+
+
+```{r}
+dim(met)
+head(met)
+tail(met)
+```
+
+
+```{r}
+table(met$year)
+table(met$day)
+table(met$hour)
+summary(met$temp)
+summary(met$elev)
+summary(met$wind.sp)
+```
+
+```{r}
+met$elev[met$elev==9999.0] <- NA
+summary(met$elev)
+```
+
+```{r}
+met <- met[met$temp>-40,]
+met2 <- met[order(met$temp),]
+head(met2)
+```
+
+```{r}
+met <- met[met$temp>-15,]
+met2 <- met[order(met$temp),]
+head(met2)
+```
+
+```{r}
+elev <- met[met$elev == max(met$elev, na.rm = TRUE), ]
+summary(elev)
+```
+
+
+```{r}
+cor(elev$temp, elev$wind.sp, use="complete")
+cor(elev$temp, elev$hour, use="complete")
+cor(elev$wind.sp, elev$day, use="complete")
+cor(elev$wind.sp, elev$hour, use="complete")
+cor(elev$temp, elev$day, use="complete")
+```
+
+```{r}
+hist(met$elev, breaks=100)
+hist(met$temp)
+hist(met$wind.sp)
+```
+
+
+```{r}
+#install.packages("leaflet")
+library(leaflet)
+leaflet(elev) %>%
+  addProviderTiles('OpenStreetMap') %>% 
+  addCircles(lat=~lat,lng=~lon, opacity=1, fillOpacity=1, radius=100)
+```
+
+```{r}
+#install.packages("lubridate")
+library(lubridate)
+elev$date <- with(elev, ymd_h(paste(year, month, day, hour, sep= ' ')))
+summary(elev$date)
+elev <- elev[order(elev$date), ]   
+head(elev)
+```
+```{r}
+plot(elev$date, elev$temp, type='l')
+plot(elev$date, elev$wind.sp, type='l')
+####Temp (highest-elevation site): clear diurnal cycle (~3–15 °C), no long gaps.
+##Wind speed: spiky/right-skewed; sustained high-wind period around Aug 24.
+##temp tends to decrease when wind increases
+```
+
+```{r}
+#install.packages("corrplot")
+library(corrplot)
+cor_matrix <- cor(
+  met[, c("temp", "wind.sp", "elev", "atm.press", "rh", "dew.point")],
+  use = "complete.obs",
+  method = "pearson"
+)
+corrplot(cor_matrix, method = "color", type = "upper",
+         title = "Correlation Matrix of Weather Variables",
+         mar = c(0,0,2,0))  
+##Questions
+##Units: wind (m/s vs mph vs kt), pressure (station vs sea-level), temperature scale.
+##Coverage: gaps/maintenance periods and any processing already applied.
+```
+
