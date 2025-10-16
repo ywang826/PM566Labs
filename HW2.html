@@ -1,0 +1,1315 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Yi Wang">
+
+<title>HW2</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="HW2_files/libs/clipboard/clipboard.min.js"></script>
+<script src="HW2_files/libs/quarto-html/quarto.js"></script>
+<script src="HW2_files/libs/quarto-html/popper.min.js"></script>
+<script src="HW2_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="HW2_files/libs/quarto-html/anchor.min.js"></script>
+<link href="HW2_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="HW2_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="HW2_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="HW2_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="HW2_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="HW2_files/libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet">
+<script src="HW2_files/libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<script src="HW2_files/libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<link href="HW2_files/libs/leaflet-1.3.1/leaflet.css" rel="stylesheet">
+<script src="HW2_files/libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="HW2_files/libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet">
+<script src="HW2_files/libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="HW2_files/libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="HW2_files/libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet">
+<script src="HW2_files/libs/leaflet-binding-2.2.3/leaflet.js"></script>
+<script src="HW2_files/libs/leaflet-providers-2.0.0/leaflet-providers_2.0.0.js"></script>
+<script src="HW2_files/libs/leaflet-providers-plugin-2.2.3/leaflet-providers-plugin.js"></script>
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">HW2</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Yi Wang </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<ol type="1">
+<li><p>(7 points) Find the top 10 most popular destinations in the flights data. How many flights went to each</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(nycflights13)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'dplyr'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:stats':
+
+    filter, lag</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>top10_dests <span class="ot">&lt;-</span> flights <span class="sc">%&gt;%</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(dest, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_max</span>(n, <span class="at">n =</span> <span class="dv">10</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(top10_dests)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 10 × 2
+   dest      n
+   &lt;chr&gt; &lt;int&gt;
+ 1 ORD   17283
+ 2 ATL   17215
+ 3 LAX   16174
+ 4 BOS   15508
+ 5 MCO   14082
+ 6 CLT   14064
+ 7 SFO   13331
+ 8 FLL   12055
+ 9 MIA   11728
+10 DCA    9705</code></pre>
+</div>
+</div></li>
+<li><p>(10 points) Create two new categorical variables in&nbsp;<code>flights</code>&nbsp;based on the departure time (<code>dep_time</code>), and arrival time (<code>arr_time</code>). These new variables should have four categories: “early morning” for 12am to 6am, “morning” for 6am to 12pm, “afternoon” for 12pm to 6pm, and “evening” for 6pm to 12am. Show barplots of both of these new variables. What percentage of flights were “red eye” flights? We’ll define these as flights that depart in “afternoon” or “evening” and arrive in “early morning” or “morning.”</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(nycflights13)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>flights_q2 <span class="ot">&lt;-</span> flights <span class="sc">%&gt;%</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(dep_time), <span class="sc">!</span><span class="fu">is.na</span>(arr_time)) <span class="sc">%&gt;%</span>   </span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">dep_time_cat =</span> <span class="fu">case_when</span>(</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>      dep_time <span class="sc">&lt;</span> <span class="dv">600</span>  <span class="sc">~</span> <span class="st">"early morning"</span>,</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>      dep_time <span class="sc">&lt;</span> <span class="dv">1200</span> <span class="sc">~</span> <span class="st">"morning"</span>,</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>      dep_time <span class="sc">&lt;</span> <span class="dv">1800</span> <span class="sc">~</span> <span class="st">"afternoon"</span>,</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>      dep_time <span class="sc">&lt;</span> <span class="dv">2400</span> <span class="sc">~</span> <span class="st">"evening"</span>,</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="cn">NA_character_</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">arr_time_cat =</span> <span class="fu">case_when</span>(</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>      arr_time <span class="sc">&lt;</span> <span class="dv">600</span>  <span class="sc">~</span> <span class="st">"early morning"</span>,</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>      arr_time <span class="sc">&lt;</span> <span class="dv">1200</span> <span class="sc">~</span> <span class="st">"morning"</span>,</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>      arr_time <span class="sc">&lt;</span> <span class="dv">1800</span> <span class="sc">~</span> <span class="st">"afternoon"</span>,</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>      arr_time <span class="sc">&lt;</span> <span class="dv">2400</span> <span class="sc">~</span> <span class="st">"evening"</span>,</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="cn">NA_character_</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">dep_time_cat =</span> <span class="fu">factor</span>(dep_time_cat, </span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>                          <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"early morning"</span>,<span class="st">"morning"</span>,<span class="st">"afternoon"</span>,<span class="st">"evening"</span>)),</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">arr_time_cat =</span> <span class="fu">factor</span>(arr_time_cat, </span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>                          <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"early morning"</span>,<span class="st">"morning"</span>,<span class="st">"afternoon"</span>,<span class="st">"evening"</span>))</span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(flights_q2, <span class="fu">aes</span>(<span class="at">x =</span> dep_time_cat)) <span class="sc">+</span></span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">fill =</span> <span class="st">"steelblue"</span>) <span class="sc">+</span></span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Distribution of Departure Times"</span>,</span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Departure Period"</span>, <span class="at">y =</span> <span class="st">"Number of Flights"</span>) <span class="sc">+</span></span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="HW2_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(flights_q2, <span class="fu">aes</span>(<span class="at">x =</span> arr_time_cat)) <span class="sc">+</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">fill =</span> <span class="st">"darkorange"</span>) <span class="sc">+</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Distribution of Arrival Times"</span>,</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Arrival Period"</span>, <span class="at">y =</span> <span class="st">"Number of Flights"</span>) <span class="sc">+</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="HW2_files/figure-html/unnamed-chunk-2-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>redeye_summary <span class="ot">&lt;-</span> flights_q2 <span class="sc">%&gt;%</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">is_redeye =</span> (dep_time_cat <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"afternoon"</span>,<span class="st">"evening"</span>)) <span class="sc">&amp;</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>                (arr_time_cat <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"early morning"</span>,<span class="st">"morning"</span>))</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">redeye_n   =</span> <span class="fu">sum</span>(is_redeye, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">denom_n    =</span> <span class="fu">n</span>(),</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">redeye_pct =</span> redeye_n <span class="sc">/</span> denom_n</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>redeye_summary</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 3
+  redeye_n denom_n redeye_pct
+     &lt;int&gt;   &lt;int&gt;      &lt;dbl&gt;
+1    10604  328063     0.0323</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">paste0</span>(<span class="st">"Red-eye flights: "</span>, redeye_summary<span class="sc">$</span>redeye_n,</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>       <span class="st">" / "</span>, redeye_summary<span class="sc">$</span>denom_n,</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>       <span class="st">" = "</span>, <span class="fu">round</span>(<span class="dv">100</span> <span class="sc">*</span> redeye_summary<span class="sc">$</span>redeye_pct, <span class="dv">2</span>), <span class="st">"%"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Red-eye flights: 10604 / 328063 = 3.23%"</code></pre>
+</div>
+</div>
+<p>3.23% of the flights are red-eye.</p></li>
+<li><p>Where there any planes that flew for multiple airlines? If so, how many were there and which airlines did they fly for?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>pairs <span class="ot">&lt;-</span> flights <span class="sc">%&gt;%</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(tailnum), <span class="sc">!</span><span class="fu">is.na</span>(carrier)) <span class="sc">%&gt;%</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>(tailnum, carrier)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>pairs_named <span class="ot">&lt;-</span> pairs <span class="sc">%&gt;%</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(airlines, <span class="at">by =</span> <span class="st">"carrier"</span>)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>multi_planes <span class="ot">&lt;-</span> pairs_named <span class="sc">%&gt;%</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(tailnum) <span class="sc">%&gt;%</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">n_carriers   =</span> <span class="fu">n_distinct</span>(carrier),</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">carriers     =</span> <span class="fu">paste</span>(<span class="fu">sort</span>(<span class="fu">unique</span>(carrier)), <span class="at">collapse =</span> <span class="st">", "</span>),</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">carrier_names =</span> <span class="fu">paste</span>(<span class="fu">sort</span>(<span class="fu">unique</span>(name)), <span class="at">collapse =</span> <span class="st">" | "</span>),</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(n_carriers <span class="sc">&gt;</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(n_carriers), tailnum)</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>n_planes <span class="ot">&lt;-</span> <span class="fu">nrow</span>(multi_planes)</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>n_planes</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 17</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>multi_planes</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 17 × 4
+   tailnum n_carriers carriers carrier_names                                    
+   &lt;chr&gt;        &lt;int&gt; &lt;chr&gt;    &lt;chr&gt;                                            
+ 1 N146PQ           2 9E, EV   Endeavor Air Inc. | ExpressJet Airlines Inc.     
+ 2 N153PQ           2 9E, EV   Endeavor Air Inc. | ExpressJet Airlines Inc.     
+ 3 N176PQ           2 9E, EV   Endeavor Air Inc. | ExpressJet Airlines Inc.     
+ 4 N181PQ           2 9E, EV   Endeavor Air Inc. | ExpressJet Airlines Inc.     
+ 5 N197PQ           2 9E, EV   Endeavor Air Inc. | ExpressJet Airlines Inc.     
+ 6 N200PQ           2 9E, EV   Endeavor Air Inc. | ExpressJet Airlines Inc.     
+ 7 N228PQ           2 9E, EV   Endeavor Air Inc. | ExpressJet Airlines Inc.     
+ 8 N232PQ           2 9E, EV   Endeavor Air Inc. | ExpressJet Airlines Inc.     
+ 9 N933AT           2 DL, FL   AirTran Airways Corporation | Delta Air Lines In…
+10 N935AT           2 DL, FL   AirTran Airways Corporation | Delta Air Lines In…
+11 N977AT           2 DL, FL   AirTran Airways Corporation | Delta Air Lines In…
+12 N978AT           2 DL, FL   AirTran Airways Corporation | Delta Air Lines In…
+13 N979AT           2 DL, FL   AirTran Airways Corporation | Delta Air Lines In…
+14 N981AT           2 DL, FL   AirTran Airways Corporation | Delta Air Lines In…
+15 N989AT           2 DL, FL   AirTran Airways Corporation | Delta Air Lines In…
+16 N990AT           2 DL, FL   AirTran Airways Corporation | Delta Air Lines In…
+17 N994AT           2 DL, FL   AirTran Airways Corporation | Delta Air Lines In…</code></pre>
+</div>
+</div>
+<p>In total,&nbsp;17 aircraft&nbsp;were identified as operating under multiple carriers.<br>
+They were associated with&nbsp;two specific airline combinations:<br>
+eight aircraft flew for both&nbsp;Endeavor Air Inc.&nbsp;and&nbsp;ExpressJet Airlines Inc.,<br>
+while nine aircraft flew for both&nbsp;AirTran Airways Corporation&nbsp;and&nbsp;Delta Air Lines Inc.</p></li>
+<li><p>(7 points) In the figure above, there is a missing relationship between&nbsp;<code>weather</code>&nbsp;and&nbsp;<code>airports</code>. What is the relationship and how should it appear in the diagram?</p>
+<p><br>
+Each weather observation is recorded at a specific airport identified by its&nbsp;origin&nbsp;code, which corresponds to the&nbsp;faa&nbsp;field in the&nbsp;airports&nbsp;dataset.<br>
+In the diagram, this should be represented as: weather.origin&nbsp;→&nbsp;airports.faa.</p>
+<p>For the rest of this assignment, the primary question you should keep in mind is this:</p></li>
+</ol>
+<blockquote class="blockquote">
+<p>Which weather phenomena have the most impact on flight delays?</p>
+</blockquote>
+<p>Don’t try to answer it now, but use this question to guide your exploratory data analysis.</p>
+<ol start="5" type="1">
+<li>(7 points) In order to address our primary question, we want to prepare a tidy dataset (a single data frame). This will consist of information from the&nbsp;<code>flights</code>&nbsp;and&nbsp;<code>weather</code>&nbsp;data. The&nbsp;<code>year</code>,&nbsp;<code>month</code>,&nbsp;<code>day</code>,&nbsp;<code>hour</code>, and&nbsp;<code>origin</code>&nbsp;variables from&nbsp;<code>weather</code>&nbsp;provide&nbsp;<em>almost</em>&nbsp;enough information to give each observation a unique value. Create a new variable in the weather dataset by pasting together those 5 variables, then determine how many duplicated values there are and explain why.</li>
+</ol>
+<p>Now merge the&nbsp;<code>flights</code>&nbsp;data and the&nbsp;<code>weather</code>&nbsp;data so that each flight contains information about the weather at its&nbsp;<strong>departure airport</strong>&nbsp;at the time it was&nbsp;<strong>scheduled</strong>&nbsp;to take off. You’ll want to use the variables&nbsp;<code>time_hour</code>&nbsp;and&nbsp;<code>origin</code>&nbsp;in order to do this.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>weather_keyed <span class="ot">&lt;-</span> weather <span class="sc">%&gt;%</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mutate</span>(<span class="at">idx =</span> <span class="fu">paste</span>(year, month, day, hour, origin, <span class="at">sep =</span> <span class="st">"_"</span>))</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>dup_n <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="fu">duplicated</span>(weather_keyed<span class="sc">$</span>idx))</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>dup_n</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 3</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>weather_dups <span class="ot">&lt;-</span> weather_keyed <span class="sc">%&gt;%</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">group_by</span>(idx) <span class="sc">%&gt;%</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="fu">filter</span>(<span class="fu">n</span>() <span class="sc">&gt;</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="fu">arrange</span>(idx)</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>weather_dups <span class="sc">%&gt;%</span> <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span> <span class="fu">count</span>(idx, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 2
+  idx                 n
+  &lt;chr&gt;           &lt;int&gt;
+1 2013_11_3_1_EWR     2
+2 2013_11_3_1_JFK     2
+3 2013_11_3_1_LGA     2</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>fl_weather <span class="ot">&lt;-</span> flights <span class="sc">%&gt;%</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">left_join</span>(weather <span class="sc">%&gt;%</span> <span class="fu">select</span>(origin, time_hour, temp, dewp, humid, wind_dir, wind_speed, wind_gust,</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>precip, pressure, visib),</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="at">by =</span> <span class="fu">c</span>(<span class="st">"origin"</span>, <span class="st">"time_hour"</span>))</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>fl_weather <span class="sc">%&gt;%</span> <span class="fu">summarize</span>(<span class="fu">across</span>(<span class="fu">c</span>(temp<span class="sc">:</span>visib), <span class="sc">~</span><span class="fu">mean</span>(<span class="fu">is.na</span>(.x)))) <span class="sc">%&gt;%</span> <span class="fu">t</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                  [,1]
+temp       0.004670760
+dewp       0.004670760
+humid      0.004670760
+wind_dir   0.029087583
+wind_speed 0.004851890
+wind_gust  0.761310188
+precip     0.004620282
+pressure   0.115174478
+visib      0.004620282</code></pre>
+</div>
+</div>
+<p>We found&nbsp;3 duplicated keys, all occurring on&nbsp;2013-11-03 at 01:00&nbsp;for&nbsp;EWR, JFK, and LGA.This is explained by the&nbsp;end of Daylight Saving Time&nbsp;(fall-back), which causes the&nbsp;1am hour to occur twice, so multiple weather observations share the same&nbsp;(year, month, day, hour, origin)&nbsp;combination.</p>
+<ol start="6" type="1">
+<li><p>(20 points) On this merged dataset, perform steps 2-5 of the EDA checklist presented in class. Remember the context provided by our primary question above.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(fl_weather)      </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 336776     28</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(fl_weather)     </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 336776</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ncol</span>(fl_weather)     </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 28</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(fl_weather)     </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>tibble [336,776 × 28] (S3: tbl_df/tbl/data.frame)
+ $ year          : int [1:336776] 2013 2013 2013 2013 2013 2013 2013 2013 2013 2013 ...
+ $ month         : int [1:336776] 1 1 1 1 1 1 1 1 1 1 ...
+ $ day           : int [1:336776] 1 1 1 1 1 1 1 1 1 1 ...
+ $ dep_time      : int [1:336776] 517 533 542 544 554 554 555 557 557 558 ...
+ $ sched_dep_time: int [1:336776] 515 529 540 545 600 558 600 600 600 600 ...
+ $ dep_delay     : num [1:336776] 2 4 2 -1 -6 -4 -5 -3 -3 -2 ...
+ $ arr_time      : int [1:336776] 830 850 923 1004 812 740 913 709 838 753 ...
+ $ sched_arr_time: int [1:336776] 819 830 850 1022 837 728 854 723 846 745 ...
+ $ arr_delay     : num [1:336776] 11 20 33 -18 -25 12 19 -14 -8 8 ...
+ $ carrier       : chr [1:336776] "UA" "UA" "AA" "B6" ...
+ $ flight        : int [1:336776] 1545 1714 1141 725 461 1696 507 5708 79 301 ...
+ $ tailnum       : chr [1:336776] "N14228" "N24211" "N619AA" "N804JB" ...
+ $ origin        : chr [1:336776] "EWR" "LGA" "JFK" "JFK" ...
+ $ dest          : chr [1:336776] "IAH" "IAH" "MIA" "BQN" ...
+ $ air_time      : num [1:336776] 227 227 160 183 116 150 158 53 140 138 ...
+ $ distance      : num [1:336776] 1400 1416 1089 1576 762 ...
+ $ hour          : num [1:336776] 5 5 5 5 6 5 6 6 6 6 ...
+ $ minute        : num [1:336776] 15 29 40 45 0 58 0 0 0 0 ...
+ $ time_hour     : POSIXct[1:336776], format: "2013-01-01 05:00:00" "2013-01-01 05:00:00" ...
+ $ temp          : num [1:336776] 39 39.9 39 39 39.9 ...
+ $ dewp          : num [1:336776] 28 25 27 27 25 ...
+ $ humid         : num [1:336776] 64.4 54.8 61.6 61.6 54.8 ...
+ $ wind_dir      : num [1:336776] 260 250 260 260 260 260 240 260 260 260 ...
+ $ wind_speed    : num [1:336776] 12.7 15 15 15 16.1 ...
+ $ wind_gust     : num [1:336776] NA 21.9 NA NA 23 ...
+ $ precip        : num [1:336776] 0 0 0 0 0 0 0 0 0 0 ...
+ $ pressure      : num [1:336776] 1012 1011 1012 1012 1012 ...
+ $ visib         : num [1:336776] 10 10 10 10 10 10 10 10 10 10 ...</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fl_weather)  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      year          month             day           dep_time    sched_dep_time
+ Min.   :2013   Min.   : 1.000   Min.   : 1.00   Min.   :   1   Min.   : 106  
+ 1st Qu.:2013   1st Qu.: 4.000   1st Qu.: 8.00   1st Qu.: 907   1st Qu.: 906  
+ Median :2013   Median : 7.000   Median :16.00   Median :1401   Median :1359  
+ Mean   :2013   Mean   : 6.549   Mean   :15.71   Mean   :1349   Mean   :1344  
+ 3rd Qu.:2013   3rd Qu.:10.000   3rd Qu.:23.00   3rd Qu.:1744   3rd Qu.:1729  
+ Max.   :2013   Max.   :12.000   Max.   :31.00   Max.   :2400   Max.   :2359  
+                                                 NA's   :8255                 
+   dep_delay          arr_time    sched_arr_time   arr_delay       
+ Min.   : -43.00   Min.   :   1   Min.   :   1   Min.   : -86.000  
+ 1st Qu.:  -5.00   1st Qu.:1104   1st Qu.:1124   1st Qu.: -17.000  
+ Median :  -2.00   Median :1535   Median :1556   Median :  -5.000  
+ Mean   :  12.64   Mean   :1502   Mean   :1536   Mean   :   6.895  
+ 3rd Qu.:  11.00   3rd Qu.:1940   3rd Qu.:1945   3rd Qu.:  14.000  
+ Max.   :1301.00   Max.   :2400   Max.   :2359   Max.   :1272.000  
+ NA's   :8255      NA's   :8713                  NA's   :9430      
+   carrier              flight       tailnum             origin         
+ Length:336776      Min.   :   1   Length:336776      Length:336776     
+ Class :character   1st Qu.: 553   Class :character   Class :character  
+ Mode  :character   Median :1496   Mode  :character   Mode  :character  
+                    Mean   :1972                                        
+                    3rd Qu.:3465                                        
+                    Max.   :8500                                        
+
+     dest              air_time        distance         hour      
+ Length:336776      Min.   : 20.0   Min.   :  17   Min.   : 1.00  
+ Class :character   1st Qu.: 82.0   1st Qu.: 502   1st Qu.: 9.00  
+ Mode  :character   Median :129.0   Median : 872   Median :13.00  
+                    Mean   :150.7   Mean   :1040   Mean   :13.18  
+                    3rd Qu.:192.0   3rd Qu.:1389   3rd Qu.:17.00  
+                    Max.   :695.0   Max.   :4983   Max.   :23.00  
+                    NA's   :9430                                  
+     minute        time_hour                           temp       
+ Min.   : 0.00   Min.   :2013-01-01 05:00:00.00   Min.   : 10.94  
+ 1st Qu.: 8.00   1st Qu.:2013-04-04 13:00:00.00   1st Qu.: 42.08  
+ Median :29.00   Median :2013-07-03 10:00:00.00   Median : 57.20  
+ Mean   :26.23   Mean   :2013-07-03 05:22:54.64   Mean   : 57.00  
+ 3rd Qu.:44.00   3rd Qu.:2013-10-01 07:00:00.00   3rd Qu.: 71.96  
+ Max.   :59.00   Max.   :2013-12-31 23:00:00.00   Max.   :100.04  
+                                                  NA's   :1573    
+      dewp           humid           wind_dir       wind_speed    
+ Min.   :-9.94   Min.   : 12.74   Min.   :  0.0   Min.   : 0.000  
+ 1st Qu.:26.06   1st Qu.: 43.99   1st Qu.:130.0   1st Qu.: 6.905  
+ Median :42.80   Median : 57.73   Median :220.0   Median :10.357  
+ Mean   :41.63   Mean   : 59.56   Mean   :201.5   Mean   :11.114  
+ 3rd Qu.:57.92   3rd Qu.: 75.33   3rd Qu.:290.0   3rd Qu.:14.960  
+ Max.   :78.08   Max.   :100.00   Max.   :360.0   Max.   :42.579  
+ NA's   :1573    NA's   :1573     NA's   :9796    NA's   :1634    
+   wind_gust          precip          pressure          visib       
+ Min.   :16.11    Min.   :0.0000   Min.   : 983.8   Min.   : 0.000  
+ 1st Qu.:20.71    1st Qu.:0.0000   1st Qu.:1012.7   1st Qu.:10.000  
+ Median :24.17    Median :0.0000   Median :1017.5   Median :10.000  
+ Mean   :25.25    Mean   :0.0046   Mean   :1017.8   Mean   : 9.256  
+ 3rd Qu.:28.77    3rd Qu.:0.0000   3rd Qu.:1022.8   3rd Qu.:10.000  
+ Max.   :66.75    Max.   :1.2100   Max.   :1042.1   Max.   :10.000  
+ NA's   :256391   NA's   :1556     NA's   :38788    NA's   :1556    </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(fl_weather, <span class="dv">5</span>)  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5 × 28
+   year month   day dep_time sched_dep_time dep_delay arr_time sched_arr_time
+  &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;          &lt;int&gt;
+1  2013     1     1      517            515         2      830            819
+2  2013     1     1      533            529         4      850            830
+3  2013     1     1      542            540         2      923            850
+4  2013     1     1      544            545        -1     1004           1022
+5  2013     1     1      554            600        -6      812            837
+# ℹ 20 more variables: arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;,
+#   tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;,
+#   hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;, temp &lt;dbl&gt;, dewp &lt;dbl&gt;,
+#   humid &lt;dbl&gt;, wind_dir &lt;dbl&gt;, wind_speed &lt;dbl&gt;, wind_gust &lt;dbl&gt;,
+#   precip &lt;dbl&gt;, pressure &lt;dbl&gt;, visib &lt;dbl&gt;</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span>(fl_weather, <span class="dv">5</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5 × 28
+   year month   day dep_time sched_dep_time dep_delay arr_time sched_arr_time
+  &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;          &lt;int&gt;
+1  2013     9    30       NA           1455        NA       NA           1634
+2  2013     9    30       NA           2200        NA       NA           2312
+3  2013     9    30       NA           1210        NA       NA           1330
+4  2013     9    30       NA           1159        NA       NA           1344
+5  2013     9    30       NA            840        NA       NA           1020
+# ℹ 20 more variables: arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;,
+#   tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;,
+#   hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;, temp &lt;dbl&gt;, dewp &lt;dbl&gt;,
+#   humid &lt;dbl&gt;, wind_dir &lt;dbl&gt;, wind_speed &lt;dbl&gt;, wind_gust &lt;dbl&gt;,
+#   precip &lt;dbl&gt;, pressure &lt;dbl&gt;, visib &lt;dbl&gt;</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(fl_weather<span class="sc">$</span>origin)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+   EWR    JFK    LGA 
+120835 111279 104662 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">select</span>(fl_weather, origin, time_hour, temp, precip, wind_speed, visib))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 6
+  origin time_hour            temp precip wind_speed visib
+  &lt;chr&gt;  &lt;dttm&gt;              &lt;dbl&gt;  &lt;dbl&gt;      &lt;dbl&gt; &lt;dbl&gt;
+1 EWR    2013-01-01 05:00:00  39.0      0       12.7    10
+2 LGA    2013-01-01 05:00:00  39.9      0       15.0    10
+3 JFK    2013-01-01 05:00:00  39.0      0       15.0    10
+4 JFK    2013-01-01 05:00:00  39.0      0       15.0    10
+5 LGA    2013-01-01 06:00:00  39.9      0       16.1    10
+6 EWR    2013-01-01 05:00:00  39.0      0       12.7    10</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(fl_weather<span class="sc">$</span>dep_delay, </span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">"Distribution of Departure Delays"</span>,</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Departure delay (minutes)"</span>, <span class="at">col =</span> <span class="st">"steelblue"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="HW2_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(fl_weather<span class="sc">$</span>wind_speed, </span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">"Distribution of Wind Speed"</span>,</span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Wind speed (mph)"</span>, <span class="at">col =</span> <span class="st">"orange"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="HW2_files/figure-html/unnamed-chunk-5-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(fl_weather<span class="sc">$</span>precip, </span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">"Distribution of Precipitation"</span>,</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Precipitation (inches)"</span>, <span class="at">col =</span> <span class="st">"lightblue"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="HW2_files/figure-html/unnamed-chunk-5-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(fl_weather<span class="sc">$</span>dep_delay <span class="sc">~</span> fl_weather<span class="sc">$</span>origin,</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>        <span class="at">main =</span> <span class="st">"Departure Delay by Airport"</span>,</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>        <span class="at">xlab =</span> <span class="st">"Origin Airport"</span>, <span class="at">ylab =</span> <span class="st">"Delay (minutes)"</span>,</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"lightblue"</span>, <span class="st">"lightgreen"</span>, <span class="st">"lightpink"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="HW2_files/figure-html/unnamed-chunk-5-4.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The distribution of departure delays is highly right-skewed, showing that most flights depart on time or with only minor delays, while a small number of flights experience extreme delays over 200 minutes.<br>
+Wind speed generally ranges from 0 to 20 mph, with most values between 4–14 mph, indicating that strong winds are relatively rare.<br>
+Precipitation is concentrated near zero, suggesting that most flights occur under clear conditions with little or no rainfall.<br>
+The boxplot of departure delays by airport shows similar patterns across EWR, JFK, and LGA, although JFK displays slightly greater variability, possibly due to heavier traffic.<br>
+Overall, these results indicate that flight delays are typically short and infrequent, but adverse weather events such as high wind or precipitation can increase the likelihood and magnitude of delays.</p></li>
+<li><p>(15 points) Calculate the average departure delay for each&nbsp;<strong>day</strong>&nbsp;(Hint: think about which variables you need in order to do this!). Which day had the worst average length of delay for departures? Now calculate the averages by&nbsp;<strong>day</strong>&nbsp;and&nbsp;<strong>origin</strong>. Which airport had the worst single day for delays and when was it? Now calculate the averages by&nbsp;<strong>hour</strong>&nbsp;and&nbsp;<strong>origin</strong>. Which airport had the worst single hour for delays (and when was it)?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lubridate)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'lubridate'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:base':
+
+    date, intersect, setdiff, union</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>fl_weather <span class="ot">&lt;-</span> fl_weather <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(dep_delay))  </span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>daily_delay <span class="ot">&lt;-</span> fl_weather <span class="sc">%&gt;%</span></span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(year, month, day) <span class="sc">%&gt;%</span></span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">avg_dep_delay =</span> <span class="fu">mean</span>(dep_delay, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(avg_dep_delay))</span>
+<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a>worst_day <span class="ot">&lt;-</span> daily_delay <span class="sc">%&gt;%</span> <span class="fu">slice_max</span>(avg_dep_delay, <span class="at">n =</span> <span class="dv">1</span>)</span>
+<span id="cb48-9"><a href="#cb48-9" aria-hidden="true" tabindex="-1"></a>worst_day</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 4
+   year month   day avg_dep_delay
+  &lt;int&gt; &lt;int&gt; &lt;int&gt;         &lt;dbl&gt;
+1  2013     3     8          83.5</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>daily_origin_delay <span class="ot">&lt;-</span> fl_weather <span class="sc">%&gt;%</span></span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(year, month, day, origin) <span class="sc">%&gt;%</span></span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">avg_dep_delay =</span> <span class="fu">mean</span>(dep_delay, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(avg_dep_delay))</span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a>worst_day_origin <span class="ot">&lt;-</span> daily_origin_delay <span class="sc">%&gt;%</span> <span class="fu">slice_max</span>(avg_dep_delay, <span class="at">n =</span> <span class="dv">1</span>)</span>
+<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a>worst_day_origin</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 5
+   year month   day origin avg_dep_delay
+  &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;          &lt;dbl&gt;
+1  2013     3     8 LGA             106.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>hourly_origin_delay <span class="ot">&lt;-</span> fl_weather <span class="sc">%&gt;%</span></span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(year, month, day, hour, origin) <span class="sc">%&gt;%</span></span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">avg_dep_delay =</span> <span class="fu">mean</span>(dep_delay, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(avg_dep_delay))</span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a>worst_hour_origin <span class="ot">&lt;-</span> hourly_origin_delay <span class="sc">%&gt;%</span> <span class="fu">slice_max</span>(avg_dep_delay, <span class="at">n =</span> <span class="dv">1</span>)</span>
+<span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a>worst_hour_origin</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 6
+   year month   day  hour origin avg_dep_delay
+  &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;          &lt;dbl&gt;
+1  2013     7    28    21 LGA             280.</code></pre>
+</div>
+</div>
+<p>The daily analysis revealed that March 8 had the longest average departure delay, reaching 83.54 minutes.<br>
+Examining delays by both day and airport, the worst case was recorded at LGA on March 8, where flights were delayed an average of 105.72 minutes.<br>
+On a finer time scale, the worst single-hour delay occurred at LGA on July 28 at 9 PM, with an average delay of 279.67 minutes, indicating a severe congestion or weather event during that time.</p></li>
+<li><p>(7 points) Compute the average delay by destination, then add that information to the&nbsp;<code>airports</code>&nbsp;data frame. Make a map showing the spatial distribution of delays (you can make it however you like, but we recommend using either&nbsp;<code>ggplot</code>&nbsp;or&nbsp;<code>leaflet</code>). Use the color of the points to display the average delay for each airport.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(leaflet)</span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(viridis)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: viridisLite</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(nycflights13)</span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a>avg_by_dest <span class="ot">&lt;-</span> flights <span class="sc">%&gt;%</span></span>
+<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(arr_delay)) <span class="sc">%&gt;%</span></span>
+<span id="cb56-5"><a href="#cb56-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(dest) <span class="sc">%&gt;%</span></span>
+<span id="cb56-6"><a href="#cb56-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb56-7"><a href="#cb56-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">avg_arr_delay =</span> <span class="fu">mean</span>(arr_delay, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb56-8"><a href="#cb56-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">n =</span> <span class="fu">n</span>(),</span>
+<span id="cb56-9"><a href="#cb56-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb56-10"><a href="#cb56-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb56-11"><a href="#cb56-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(airports, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"dest"</span> <span class="ot">=</span> <span class="st">"faa"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb56-12"><a href="#cb56-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(lat), <span class="sc">!</span><span class="fu">is.na</span>(lon))</span>
+<span id="cb56-13"><a href="#cb56-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-14"><a href="#cb56-14" aria-hidden="true" tabindex="-1"></a>pal <span class="ot">&lt;-</span> <span class="fu">colorNumeric</span>(<span class="st">"viridis"</span>, <span class="at">domain =</span> avg_by_dest<span class="sc">$</span>avg_arr_delay)</span>
+<span id="cb56-15"><a href="#cb56-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-16"><a href="#cb56-16" aria-hidden="true" tabindex="-1"></a><span class="fu">leaflet</span>(avg_by_dest) <span class="sc">%&gt;%</span></span>
+<span id="cb56-17"><a href="#cb56-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addProviderTiles</span>(providers<span class="sc">$</span>CartoDB.Positron) <span class="sc">%&gt;%</span></span>
+<span id="cb56-18"><a href="#cb56-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addCircleMarkers</span>(</span>
+<span id="cb56-19"><a href="#cb56-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">lng =</span> <span class="sc">~</span>lon, <span class="at">lat =</span> <span class="sc">~</span>lat,</span>
+<span id="cb56-20"><a href="#cb56-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">radius =</span> <span class="sc">~</span><span class="fu">pmax</span>(<span class="dv">3</span>, <span class="fu">pmin</span>(<span class="dv">10</span>, <span class="fu">sqrt</span>(n)<span class="sc">/</span><span class="dv">15</span>)),  </span>
+<span id="cb56-21"><a href="#cb56-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">fillColor =</span> <span class="sc">~</span><span class="fu">pal</span>(avg_arr_delay),</span>
+<span id="cb56-22"><a href="#cb56-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">weight =</span> <span class="fl">0.3</span>,</span>
+<span id="cb56-23"><a href="#cb56-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">fillOpacity =</span> <span class="fl">0.9</span>,</span>
+<span id="cb56-24"><a href="#cb56-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">popup =</span> <span class="sc">~</span><span class="fu">paste0</span>(</span>
+<span id="cb56-25"><a href="#cb56-25" aria-hidden="true" tabindex="-1"></a>      <span class="st">"&lt;b&gt;"</span>, name, <span class="st">"&lt;/b&gt;&lt;br&gt;"</span>,</span>
+<span id="cb56-26"><a href="#cb56-26" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Avg Arrival Delay: "</span>, <span class="fu">round</span>(avg_arr_delay, <span class="dv">1</span>), <span class="st">" min&lt;br&gt;"</span>,</span>
+<span id="cb56-27"><a href="#cb56-27" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Flights: "</span>, n</span>
+<span id="cb56-28"><a href="#cb56-28" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb56-29"><a href="#cb56-29" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb56-30"><a href="#cb56-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addLegend</span>(</span>
+<span id="cb56-31"><a href="#cb56-31" aria-hidden="true" tabindex="-1"></a>    <span class="st">"bottomright"</span>,</span>
+<span id="cb56-32"><a href="#cb56-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">pal =</span> pal, <span class="at">values =</span> <span class="sc">~</span>avg_arr_delay,</span>
+<span id="cb56-33"><a href="#cb56-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Avg Arrival Delay (min)"</span>,</span>
+<span id="cb56-34"><a href="#cb56-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">opacity =</span> <span class="dv">1</span></span>
+<span id="cb56-35"><a href="#cb56-35" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="leaflet html-widget html-fill-item" id="htmlwidget-7c855c24b298d448265f" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-7c855c24b298d448265f">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addProviderTiles","args":["CartoDB.Positron",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addCircleMarkers","args":[[35.0402222,41.253053,42.748267,61.174361,33.636719,30.194528,35.436194,41.938889,44.807444,33.562942,36.124472,42.364347,44.471861,42.940525,34.200667,39.175361,45.777643,33.938833,40.9160833,38.138639,32.898647,41.411689,35.214,39.997972,38.373147,39.048836,39.902375,38.852083,39.861656,32.896828,41.533972,42.212444,39.642556,24.556111,26.072583,42.880833,36.09775,34.895556,40.481181,21.318681,29.645419,38.944533,29.984433,34.270615,39.717331,43.607333333,30.494056,36.080056,33.942536,38.0365,33.817722,39.297606,28.429394,41.785972,35.042417,42.932556,25.79325,42.947222,43.139858,44.881956,29.993389,38.509794,41.391667,33.67975,37.721278,35.393089,41.303167,41.978603,36.894611,26.683161,45.588722,39.871944,33.434278,40.491467,33.829667,41.732581,43.646161,35.877639,37.505167,43.118866,26.536167,32.733556,29.533694,32.127583,41.708661,38.1740858,47.449,37.618972,37.3626,40.788389,38.695417,33.675667,27.395444,38.748697,43.111187,27.975472,36.198389,44.741445,35.810972,36.2818694],[-106.6091944,-70.060181,-73.801692,-149.996361,-84.428067,-97.669889,-82.54180599999999,-72.683222,-68.82813899999999,-86.75355,-86.678194,-71.00518099999999,-73.153278,-78.732167,-118.358667,-76.668333,-111.160151,-81.119528,-81.44219440000001,-78.452861,-80.04052799999999,-81.849794,-80.943139,-82.89188900000001,-81.593189,-84.667822,-84.219375,-77.037722,-104.673178,-97.037997,-93.663083,-83.35338900000001,-106.917694,-81.759556,-80.15275,-85.522806,-79.93730600000001,-82.218889,-107.21766,-157.922428,-95.27888900000001,-77.455811,-95.341442,-77.902569,-86.294383,-110.73775,-81.687861,-115.15225,-118.408075,-84.605889,-118.151611,-94.713905,-81.308994,-87.75241699999999,-89.97666700000001,-71.435667,-80.290556,-87.89658300000001,-89.337514,-93.221767,-90.258028,-107.894242,-70.615278,-78.92833299999999,-122.220722,-97.60073300000001,-95.894069,-87.904842,-76.201222,-80.095589,-122.5975,-75.241139,-112.011583,-80.232872,-116.506694,-71.420383,-70.309281,-78.78747199999999,-77.319667,-77.672389,-81.755167,-117.189667,-98.46977800000001,-81.202139,-86.31725,-85.7364989,-122.309306,-122.374889,-121.929022,-111.977772,-121.590778,-117.868222,-82.554389,-90.370028,-76.10631100000001,-82.53325,-95.88811099999999,-85.582235,-83.994028,-94.3068111],[3,3,3,3,8.650497737766949,3.273462319250911,3,3,3,3,5.2,8.170951257010682,3.339993346633427,4.506785008308152,3,3,3,3,3,3,3.501745596445039,4.419150245113746,7.795725324389857,3.844765561412324,3,4.068851871911234,3,6.363437226321427,5.644663162866516,6.105735008989499,3,6.335438246702258,3,3,7.271557986811048,3,3,3,3,3,3.042659655265074,4.89126205027337,5.611496136405057,3,3,3,3.414348807280501,5.143280405862909,8.439589247508831,3,3,3,7.878804195787299,4.229525846816506,3,3,7.178052970300822,3.469870314579495,3,5.549374339108469,4.063386655378874,3,3,3,3,3,3,8.580598269740092,3,5.369460970256801,3,3,4.524501200255241,3.493486001753041,3,3,3.188869531493706,5.876506898943736,3.229034943549956,3.237282811247729,3.945179900136931,3.469870314579495,3,3,3,3,4.155317877932646,7.651579357666407,3,3.300505011863083,3,3,3,4.290558109254423,3,5.731007280089988,3,3,3,3],null,null,{"interactive":true,"className":"","stroke":true,"color":"black","weight":0.3,"opacity":0.5,"fill":true,"fillColor":["#297C8E","#287D8E","#1FA187","#34618D","#1F958B","#26828E","#23898E","#25858E","#23898E","#24AA83","#1F978B","#2A768E","#228D8D","#228D8D","#238A8D","#20938C","#24878E","#FDE725","#31B57B","#218F8D","#20928C","#218E8D","#24868E","#20928C","#1FA287","#20A486","#1E9B8A","#228D8D","#228B8D","#2F6C8E","#2DB27D","#27808E","#26828E","#26828E","#23898E","#29AF7F","#1FA088","#22A785","#2C738E","#31668E","#24868E","#1F9F88","#297B8E","#287D8E","#21918C","#71CF57","#1F978B","#2F6C8E","#2E6D8E","#440154","#2F6B8E","#1FA187","#27808E","#1F998A","#20938C","#1FA287","#2F6C8E","#1FA188","#34B679","#24868E","#25838E","#2C718E","#306A8E","#287C8E","#2A768E","#8AD547","#1FA287","#26818E","#1F948C","#228B8D","#277F8E","#21918C","#2C728E","#23888E","#46337F","#22A884","#1F978B","#21918C","#33B67A","#1F968B","#2A778E","#2A778E","#25858E","#20A386","#25838E","#1E9B8A","#31678E","#2B758E","#2A788E","#2F6C8E","#1F988B","#3E4A89","#2A768E","#1F948C","#228D8D","#24878E","#A9DC33","#1E9C89","#4EC36B","#24878E"],"fillOpacity":0.9},null,null,["<b>Albuquerque International Sunport<\/b><br>Avg Arrival Delay: 4.4 min<br>Flights: 254","<b>Nantucket Mem<\/b><br>Avg Arrival Delay: 4.9 min<br>Flights: 264","<b>Albany Intl<\/b><br>Avg Arrival Delay: 14.4 min<br>Flights: 418","<b>Ted Stevens Anchorage Intl<\/b><br>Avg Arrival Delay: -2.5 min<br>Flights: 8","<b>Hartsfield Jackson Atlanta Intl<\/b><br>Avg Arrival Delay: 11.3 min<br>Flights: 16837","<b>Austin Bergstrom Intl<\/b><br>Avg Arrival Delay: 6 min<br>Flights: 2411","<b>Asheville Regional Airport<\/b><br>Avg Arrival Delay: 8 min<br>Flights: 261","<b>Bradley Intl<\/b><br>Avg Arrival Delay: 7 min<br>Flights: 412","<b>Bangor Intl<\/b><br>Avg Arrival Delay: 8 min<br>Flights: 358","<b>Birmingham Intl<\/b><br>Avg Arrival Delay: 16.9 min<br>Flights: 269","<b>Nashville Intl<\/b><br>Avg Arrival Delay: 11.8 min<br>Flights: 6084","<b>General Edward Lawrence Logan Intl<\/b><br>Avg Arrival Delay: 2.9 min<br>Flights: 15022","<b>Burlington Intl<\/b><br>Avg Arrival Delay: 9 min<br>Flights: 2510","<b>Buffalo Niagara Intl<\/b><br>Avg Arrival Delay: 8.9 min<br>Flights: 4570","<b>Bob Hope<\/b><br>Avg Arrival Delay: 8.2 min<br>Flights: 370","<b>Baltimore Washington Intl<\/b><br>Avg Arrival Delay: 10.7 min<br>Flights: 1687","<b>Gallatin Field<\/b><br>Avg Arrival Delay: 7.6 min<br>Flights: 35","<b>Columbia Metropolitan<\/b><br>Avg Arrival Delay: 41.8 min<br>Flights: 106","<b>Akron Canton Regional Airport<\/b><br>Avg Arrival Delay: 19.7 min<br>Flights: 842","<b>Charlottesville-Albemarle<\/b><br>Avg Arrival Delay: 9.5 min<br>Flights: 46","<b>Charleston Afb Intl<\/b><br>Avg Arrival Delay: 10.6 min<br>Flights: 2759","<b>Cleveland Hopkins Intl<\/b><br>Avg Arrival Delay: 9.2 min<br>Flights: 4394","<b>Charlotte Douglas Intl<\/b><br>Avg Arrival Delay: 7.4 min<br>Flights: 13674","<b>Port Columbus Intl<\/b><br>Avg Arrival Delay: 10.6 min<br>Flights: 3326","<b>Yeager<\/b><br>Avg Arrival Delay: 14.7 min<br>Flights: 134","<b>Cincinnati Northern Kentucky Intl<\/b><br>Avg Arrival Delay: 15.4 min<br>Flights: 3725","<b>James M Cox Dayton Intl<\/b><br>Avg Arrival Delay: 12.7 min<br>Flights: 1399","<b>Ronald Reagan Washington Natl<\/b><br>Avg Arrival Delay: 9.1 min<br>Flights: 9111","<b>Denver Intl<\/b><br>Avg Arrival Delay: 8.6 min<br>Flights: 7169","<b>Dallas Fort Worth Intl<\/b><br>Avg Arrival Delay: 0.3 min<br>Flights: 8388","<b>Des Moines Intl<\/b><br>Avg Arrival Delay: 19 min<br>Flights: 523","<b>Detroit Metro Wayne Co<\/b><br>Avg Arrival Delay: 5.4 min<br>Flights: 9031","<b>Eagle Co Rgnl<\/b><br>Avg Arrival Delay: 6.3 min<br>Flights: 207","<b>Key West Intl<\/b><br>Avg Arrival Delay: 6.4 min<br>Flights: 17","<b>Fort Lauderdale Hollywood Intl<\/b><br>Avg Arrival Delay: 8.1 min<br>Flights: 11897","<b>Gerald R Ford Intl<\/b><br>Avg Arrival Delay: 18.2 min<br>Flights: 728","<b>Piedmont Triad<\/b><br>Avg Arrival Delay: 14.1 min<br>Flights: 1492","<b>Greenville-Spartanburg International<\/b><br>Avg Arrival Delay: 15.9 min<br>Flights: 790","<b>Yampa Valley<\/b><br>Avg Arrival Delay: 2.1 min<br>Flights: 14","<b>Honolulu Intl<\/b><br>Avg Arrival Delay: -1.4 min<br>Flights: 701","<b>William P Hobby<\/b><br>Avg Arrival Delay: 7.2 min<br>Flights: 2083","<b>Washington Dulles Intl<\/b><br>Avg Arrival Delay: 13.9 min<br>Flights: 5383","<b>George Bush Intercontinental<\/b><br>Avg Arrival Delay: 4.2 min<br>Flights: 7085","<b>Wilmington Intl<\/b><br>Avg Arrival Delay: 4.6 min<br>Flights: 107","<b>Indianapolis Intl<\/b><br>Avg Arrival Delay: 9.9 min<br>Flights: 1981","<b>Jackson Hole Airport<\/b><br>Avg Arrival Delay: 28.1 min<br>Flights: 21","<b>Jacksonville Intl<\/b><br>Avg Arrival Delay: 11.8 min<br>Flights: 2623","<b>Mc Carran Intl<\/b><br>Avg Arrival Delay: 0.3 min<br>Flights: 5952","<b>Los Angeles Intl<\/b><br>Avg Arrival Delay: 0.5 min<br>Flights: 16026","<b>Blue Grass<\/b><br>Avg Arrival Delay: -22 min<br>Flights: 1","<b>Long Beach<\/b><br>Avg Arrival Delay: -0.1 min<br>Flights: 661","<b>Kansas City Intl<\/b><br>Avg Arrival Delay: 14.5 min<br>Flights: 1885","<b>Orlando Intl<\/b><br>Avg Arrival Delay: 5.5 min<br>Flights: 13967","<b>Chicago Midway Intl<\/b><br>Avg Arrival Delay: 12.4 min<br>Flights: 4025","<b>Memphis Intl<\/b><br>Avg Arrival Delay: 10.6 min<br>Flights: 1686","<b>Manchester Regional Airport<\/b><br>Avg Arrival Delay: 14.8 min<br>Flights: 932","<b>Miami Intl<\/b><br>Avg Arrival Delay: 0.3 min<br>Flights: 11593","<b>General Mitchell Intl<\/b><br>Avg Arrival Delay: 14.2 min<br>Flights: 2709","<b>Dane Co Rgnl Truax Fld<\/b><br>Avg Arrival Delay: 20.2 min<br>Flights: 556","<b>Minneapolis St Paul Intl<\/b><br>Avg Arrival Delay: 7.3 min<br>Flights: 6929","<b>Louis Armstrong New Orleans Intl<\/b><br>Avg Arrival Delay: 6.5 min<br>Flights: 3715","<b>Montrose Regional Airport<\/b><br>Avg Arrival Delay: 1.8 min<br>Flights: 14","<b>Martha\\\\'s Vineyard<\/b><br>Avg Arrival Delay: -0.3 min<br>Flights: 210","<b>Myrtle Beach Intl<\/b><br>Avg Arrival Delay: 4.6 min<br>Flights: 58","<b>Metropolitan Oakland Intl<\/b><br>Avg Arrival Delay: 3.1 min<br>Flights: 309","<b>Will Rogers World<\/b><br>Avg Arrival Delay: 30.6 min<br>Flights: 315","<b>Eppley Afld<\/b><br>Avg Arrival Delay: 14.7 min<br>Flights: 817","<b>Chicago Ohare Intl<\/b><br>Avg Arrival Delay: 5.9 min<br>Flights: 16566","<b>Norfolk Intl<\/b><br>Avg Arrival Delay: 10.9 min<br>Flights: 1434","<b>Palm Beach Intl<\/b><br>Avg Arrival Delay: 8.6 min<br>Flights: 6487","<b>Portland Intl<\/b><br>Avg Arrival Delay: 5.1 min<br>Flights: 1342","<b>Philadelphia Intl<\/b><br>Avg Arrival Delay: 10.1 min<br>Flights: 1541","<b>Phoenix Sky Harbor Intl<\/b><br>Avg Arrival Delay: 2.1 min<br>Flights: 4606","<b>Pittsburgh Intl<\/b><br>Avg Arrival Delay: 7.7 min<br>Flights: 2746","<b>Palm Springs Intl<\/b><br>Avg Arrival Delay: -12.7 min<br>Flights: 18","<b>Theodore Francis Green State<\/b><br>Avg Arrival Delay: 16.2 min<br>Flights: 358","<b>Portland Intl Jetport<\/b><br>Avg Arrival Delay: 11.7 min<br>Flights: 2288","<b>Raleigh Durham Intl<\/b><br>Avg Arrival Delay: 10.1 min<br>Flights: 7770","<b>Richmond Intl<\/b><br>Avg Arrival Delay: 20.1 min<br>Flights: 2346","<b>Greater Rochester Intl<\/b><br>Avg Arrival Delay: 11.6 min<br>Flights: 2358","<b>Southwest Florida Intl<\/b><br>Avg Arrival Delay: 3.2 min<br>Flights: 3502","<b>San Diego Intl<\/b><br>Avg Arrival Delay: 3.1 min<br>Flights: 2709","<b>San Antonio Intl<\/b><br>Avg Arrival Delay: 6.9 min<br>Flights: 659","<b>Savannah Hilton Head Intl<\/b><br>Avg Arrival Delay: 15.1 min<br>Flights: 749","<b>South Bend Rgnl<\/b><br>Avg Arrival Delay: 6.5 min<br>Flights: 10","<b>Louisville International Airport<\/b><br>Avg Arrival Delay: 12.7 min<br>Flights: 1104","<b>Seattle Tacoma Intl<\/b><br>Avg Arrival Delay: -1.1 min<br>Flights: 3885","<b>San Francisco Intl<\/b><br>Avg Arrival Delay: 2.7 min<br>Flights: 13173","<b>Norman Y Mineta San Jose Intl<\/b><br>Avg Arrival Delay: 3.4 min<br>Flights: 328","<b>Salt Lake City Intl<\/b><br>Avg Arrival Delay: 0.2 min<br>Flights: 2451","<b>Sacramento Intl<\/b><br>Avg Arrival Delay: 12.1 min<br>Flights: 282","<b>John Wayne Arpt Orange Co<\/b><br>Avg Arrival Delay: -7.9 min<br>Flights: 812","<b>Sarasota Bradenton Intl<\/b><br>Avg Arrival Delay: 3.1 min<br>Flights: 1201","<b>Lambert St Louis Intl<\/b><br>Avg Arrival Delay: 11.1 min<br>Flights: 4142","<b>Syracuse Hancock Intl<\/b><br>Avg Arrival Delay: 8.9 min<br>Flights: 1707","<b>Tampa Intl<\/b><br>Avg Arrival Delay: 7.4 min<br>Flights: 7390","<b>Tulsa Intl<\/b><br>Avg Arrival Delay: 33.7 min<br>Flights: 294","<b>Cherry Capital Airport<\/b><br>Avg Arrival Delay: 13 min<br>Flights: 95","<b>Mc Ghee Tyson<\/b><br>Avg Arrival Delay: 24.1 min<br>Flights: 578","<b>NW Arkansas Regional<\/b><br>Avg Arrival Delay: 7.5 min<br>Flights: 992"],null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addLegend","args":[{"colors":["#440154 , #470D60 3.13655866252404%, #424086 18.8193519751443%, #2F6B8E 34.5021452877645%, #21918C 50.1849386003847%, #32B67A 65.8677319130049%, #84D44B 81.5505252256251%, #ECE51B 97.2333185382453%, #FDE725 "],"labels":["-20","-10","0","10","20","30","40"],"na_color":null,"na_label":"NA","opacity":1,"position":"bottomright","type":"numeric","title":"Avg Arrival Delay (min)","extra":{"p_1":0.03136558662524042,"p_n":0.9723331853824529},"layerId":null,"className":"info legend","group":null}]}],"limits":{"lat":[21.318681,61.174361],"lng":[-157.922428,-68.82813899999999]}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div></li>
+<li><p>(20 points) Finally, create as many plots and summary statistics as needed to answer the primary question above.</p></li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
+<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a><span class="co">#1. Correlation Analysis</span></span>
+<span id="cb57-7"><a href="#cb57-7" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> fl_weather <span class="sc">%&gt;%</span></span>
+<span id="cb57-8"><a href="#cb57-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(dep_delay), <span class="sc">!</span><span class="fu">is.na</span>(arr_delay)) <span class="sc">%&gt;%</span></span>
+<span id="cb57-9"><a href="#cb57-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(dep_delay, arr_delay, temp, dewp, humid,</span>
+<span id="cb57-10"><a href="#cb57-10" aria-hidden="true" tabindex="-1"></a>         wind_speed, wind_gust, precip, pressure, visib)</span>
+<span id="cb57-11"><a href="#cb57-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-12"><a href="#cb57-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Departure delay correlations</span></span>
+<span id="cb57-13"><a href="#cb57-13" aria-hidden="true" tabindex="-1"></a>dep_corr <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
+<span id="cb57-14"><a href="#cb57-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(temp<span class="sc">:</span>visib, <span class="sc">~</span><span class="fu">cor</span>(dep_delay, .x, <span class="at">use =</span> <span class="st">"complete.obs"</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb57-15"><a href="#cb57-15" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_longer</span>(<span class="fu">everything</span>(), <span class="at">names_to =</span> <span class="st">"Variable"</span>, <span class="at">values_to =</span> <span class="st">"DepDelay_Corr"</span>)</span>
+<span id="cb57-16"><a href="#cb57-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-17"><a href="#cb57-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Arrival delay correlations</span></span>
+<span id="cb57-18"><a href="#cb57-18" aria-hidden="true" tabindex="-1"></a>arr_corr <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
+<span id="cb57-19"><a href="#cb57-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(temp<span class="sc">:</span>visib, <span class="sc">~</span><span class="fu">cor</span>(arr_delay, .x, <span class="at">use =</span> <span class="st">"complete.obs"</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb57-20"><a href="#cb57-20" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_longer</span>(<span class="fu">everything</span>(), <span class="at">names_to =</span> <span class="st">"Variable"</span>, <span class="at">values_to =</span> <span class="st">"ArrDelay_Corr"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="co">#2. Relationship Between Departure and Arrival Delays</span></span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x =</span> dep_delay, <span class="at">y =</span> arr_delay)) <span class="sc">+</span></span>
+<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.3</span>, <span class="at">color =</span> <span class="st">"steelblue"</span>) <span class="sc">+</span></span>
+<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">color =</span> <span class="st">"red"</span>) <span class="sc">+</span></span>
+<span id="cb58-5"><a href="#cb58-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Relationship Between Departure and Arrival Delays"</span>,</span>
+<span id="cb58-6"><a href="#cb58-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Departure Delay (minutes)"</span>,</span>
+<span id="cb58-7"><a href="#cb58-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Arrival Delay (minutes)"</span>) <span class="sc">+</span></span>
+<span id="cb58-8"><a href="#cb58-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="HW2_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(data<span class="sc">$</span>dep_delay, data<span class="sc">$</span>arr_delay, <span class="at">use =</span> <span class="st">"complete.obs"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9148028</code></pre>
+</div>
+</div>
+<p>The points cluster closely along the red line, suggesting a strong positive linear relationship. The&nbsp;correlation coefficient (r = 0.91)&nbsp;confirms this strong relationship — when a flight departs late, it almost always arrives late as well.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="co">#3. Visual Exploration of Weather Effects</span></span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a><span class="co">#Precipitation</span></span>
+<span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x =</span> precip, <span class="at">y =</span> dep_delay)) <span class="sc">+</span></span>
+<span id="cb62-4"><a href="#cb62-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.3</span>, <span class="at">color =</span> <span class="st">"steelblue"</span>) <span class="sc">+</span></span>
+<span id="cb62-5"><a href="#cb62-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">color =</span> <span class="st">"red"</span>) <span class="sc">+</span></span>
+<span id="cb62-6"><a href="#cb62-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Effect of Precipitation on Departure Delays"</span>,</span>
+<span id="cb62-7"><a href="#cb62-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Precipitation (inches)"</span>, <span class="at">y =</span> <span class="st">"Departure Delay (min)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 1527 rows containing non-finite outside the scale range
+(`stat_smooth()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 1527 rows containing missing values or values outside the scale range
+(`geom_point()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="HW2_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Wind Speed</span></span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x =</span> wind_speed, <span class="at">y =</span> dep_delay)) <span class="sc">+</span></span>
+<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.3</span>, <span class="at">color =</span> <span class="st">"orange"</span>) <span class="sc">+</span></span>
+<span id="cb66-4"><a href="#cb66-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">color =</span> <span class="st">"red"</span>) <span class="sc">+</span></span>
+<span id="cb66-5"><a href="#cb66-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Effect of Wind Speed on Departure Delays"</span>,</span>
+<span id="cb66-6"><a href="#cb66-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Wind Speed (mph)"</span>, <span class="at">y =</span> <span class="st">"Departure Delay (min)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 1605 rows containing non-finite outside the scale range
+(`stat_smooth()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 1605 rows containing missing values or values outside the scale range
+(`geom_point()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="HW2_files/figure-html/unnamed-chunk-10-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Visibility</span></span>
+<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x =</span> visib, <span class="at">y =</span> dep_delay)) <span class="sc">+</span></span>
+<span id="cb70-3"><a href="#cb70-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.3</span>, <span class="at">color =</span> <span class="st">"purple"</span>) <span class="sc">+</span></span>
+<span id="cb70-4"><a href="#cb70-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">color =</span> <span class="st">"red"</span>) <span class="sc">+</span></span>
+<span id="cb70-5"><a href="#cb70-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Effect of Visibility on Departure Delays"</span>,</span>
+<span id="cb70-6"><a href="#cb70-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Visibility (miles)"</span>, <span class="at">y =</span> <span class="st">"Departure Delay (min)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 1527 rows containing non-finite outside the scale range
+(`stat_smooth()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 1527 rows containing missing values or values outside the scale range
+(`geom_point()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="HW2_files/figure-html/unnamed-chunk-10-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The scatter plot shows a <strong>positive relationship</strong>&nbsp;between precipitation and departure delays.</p>
+<p>Rain and snow slightly contribute to longer departure delays, but precipitation alone is not a strong predictor.</p>
+<p>Wind speed alone does not have a major effect on departure delays, though extreme winds might still cause cancellations or holding patterns.</p>
+<p>Low visibility can occasionally cause severe delays, but under normal conditions, visibility does not strongly influence departure time.</p>
+<p>Across all three factors,&nbsp;<strong>precipitation</strong>&nbsp;shows the most noticeable (but still weak) effect on departure delays.<br>
+Wind speed and visibility appear to have minimal influence in this dataset, implying that other factors—such as air traffic, airline operations, and congestion—may play larger roles in determining flight delays.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(data) <span class="sc">+</span></span>
+<span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="fu">aes</span>(<span class="at">x =</span> dep_delay, <span class="at">fill =</span> <span class="st">"Departure"</span>), <span class="at">alpha =</span> <span class="fl">0.4</span>) <span class="sc">+</span></span>
+<span id="cb74-3"><a href="#cb74-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="fu">aes</span>(<span class="at">x =</span> arr_delay, <span class="at">fill =</span> <span class="st">"Arrival"</span>), <span class="at">alpha =</span> <span class="fl">0.4</span>) <span class="sc">+</span></span>
+<span id="cb74-4"><a href="#cb74-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Departure"</span> <span class="ot">=</span> <span class="st">"skyblue"</span>, <span class="st">"Arrival"</span> <span class="ot">=</span> <span class="st">"tomato"</span>)) <span class="sc">+</span></span>
+<span id="cb74-5"><a href="#cb74-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="sc">-</span><span class="dv">50</span>, <span class="dv">300</span>) <span class="sc">+</span></span>
+<span id="cb74-6"><a href="#cb74-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Distribution of Departure and Arrival Delays"</span>,</span>
+<span id="cb74-7"><a href="#cb74-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Delay (minutes)"</span>, <span class="at">fill =</span> <span class="st">"Type"</span>) <span class="sc">+</span></span>
+<span id="cb74-8"><a href="#cb74-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 601 rows containing non-finite outside the scale range
+(`stat_density()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 1722 rows containing non-finite outside the scale range
+(`stat_density()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="HW2_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>This density plot compares the distributions of&nbsp;<strong>departure delays</strong>&nbsp;(blue) and&nbsp;<strong>arrival delays</strong>&nbsp;(red).</p>
+<p>While both departure and arrival delays follow a similar skewed pattern, arrival delays tend to be slightly shorter on average, showing airlines’ partial recovery capability during flight.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="co">#4. Comparison of Delay Distributions</span></span>
+<span id="cb77-2"><a href="#cb77-2" aria-hidden="true" tabindex="-1"></a>data_bins <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
+<span id="cb77-3"><a href="#cb77-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb77-4"><a href="#cb77-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">precip_bin =</span> <span class="fu">cut</span>(precip, <span class="at">breaks =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="cn">Inf</span>, <span class="dv">0</span>, <span class="fl">0.1</span>, <span class="fl">0.5</span>, <span class="cn">Inf</span>),</span>
+<span id="cb77-5"><a href="#cb77-5" aria-hidden="true" tabindex="-1"></a>                     <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"0"</span>, <span class="st">"(0,0.1]"</span>, <span class="st">"(0.1,0.5]"</span>, <span class="st">"&gt;0.5"</span>)),</span>
+<span id="cb77-6"><a href="#cb77-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">wind_bin   =</span> <span class="fu">cut</span>(wind_speed, <span class="at">breaks =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="cn">Inf</span>, <span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">15</span>, <span class="dv">20</span>, <span class="cn">Inf</span>),</span>
+<span id="cb77-7"><a href="#cb77-7" aria-hidden="true" tabindex="-1"></a>                     <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"&lt;=5"</span>,<span class="st">"(5,10]"</span>,<span class="st">"(10,15]"</span>,<span class="st">"(15,20]"</span>,<span class="st">"&gt;20"</span>)),</span>
+<span id="cb77-8"><a href="#cb77-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">visib_bin  =</span> <span class="fu">cut</span>(visib, <span class="at">breaks =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="cn">Inf</span>, <span class="dv">2</span>, <span class="dv">5</span>, <span class="dv">10</span>, <span class="cn">Inf</span>),</span>
+<span id="cb77-9"><a href="#cb77-9" aria-hidden="true" tabindex="-1"></a>                     <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"&lt;=2"</span>,<span class="st">"(2,5]"</span>,<span class="st">"(5,10]"</span>,<span class="st">" &gt;10"</span>))</span>
+<span id="cb77-10"><a href="#cb77-10" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb77-11"><a href="#cb77-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb77-12"><a href="#cb77-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Mean dep_delay by bins</span></span>
+<span id="cb77-13"><a href="#cb77-13" aria-hidden="true" tabindex="-1"></a>bin_summary <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb77-14"><a href="#cb77-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">precip =</span> data_bins <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(precip_bin) <span class="sc">%&gt;%</span></span>
+<span id="cb77-15"><a href="#cb77-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">mean_delay =</span> <span class="fu">mean</span>(dep_delay, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">n =</span> <span class="fu">n</span>(), <span class="at">.groups =</span> <span class="st">"drop"</span>),</span>
+<span id="cb77-16"><a href="#cb77-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">wind   =</span> data_bins <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(wind_bin) <span class="sc">%&gt;%</span></span>
+<span id="cb77-17"><a href="#cb77-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">mean_delay =</span> <span class="fu">mean</span>(dep_delay, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">n =</span> <span class="fu">n</span>(), <span class="at">.groups =</span> <span class="st">"drop"</span>),</span>
+<span id="cb77-18"><a href="#cb77-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">visib  =</span> data_bins <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(visib_bin) <span class="sc">%&gt;%</span></span>
+<span id="cb77-19"><a href="#cb77-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">mean_delay =</span> <span class="fu">mean</span>(dep_delay, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">n =</span> <span class="fu">n</span>(), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span>
+<span id="cb77-20"><a href="#cb77-20" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb77-21"><a href="#cb77-21" aria-hidden="true" tabindex="-1"></a>bin_summary</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$precip
+# A tibble: 5 × 3
+  precip_bin mean_delay      n
+  &lt;fct&gt;           &lt;dbl&gt;  &lt;int&gt;
+1 0                11.3 304877
+2 (0,0.1]          28.6  17251
+3 (0.1,0.5]        40.5   3552
+4 &gt;0.5             48.9    139
+5 &lt;NA&gt;             13.4   1527
+
+$wind
+# A tibble: 6 × 3
+  wind_bin mean_delay      n
+  &lt;fct&gt;         &lt;dbl&gt;  &lt;int&gt;
+1 &lt;=5            10.2  40552
+2 (5,10]         11.2 105252
+3 (10,15]        13.0 116608
+4 (15,20]        14.8  43412
+5 &gt;20            16.8  19917
+6 &lt;NA&gt;           13.0   1605
+
+$visib
+# A tibble: 4 × 3
+  visib_bin mean_delay      n
+  &lt;fct&gt;          &lt;dbl&gt;  &lt;int&gt;
+1 &lt;=2             27.8   9681
+2 (2,5]           20.7  12270
+3 (5,10]          11.7 303868
+4 &lt;NA&gt;            13.4   1527</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Bar plots for bins </span></span>
+<span id="cb79-2"><a href="#cb79-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(bin_summary<span class="sc">$</span>precip, <span class="fu">aes</span>(precip_bin, mean_delay)) <span class="sc">+</span></span>
+<span id="cb79-3"><a href="#cb79-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">"steelblue"</span>) <span class="sc">+</span></span>
+<span id="cb79-4"><a href="#cb79-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Average Departure Delay by Precipitation Bin"</span>,</span>
+<span id="cb79-5"><a href="#cb79-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Precipitation bin"</span>, <span class="at">y =</span> <span class="st">"Average dep delay (min)"</span>) <span class="sc">+</span></span>
+<span id="cb79-6"><a href="#cb79-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="HW2_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Precipitation has a&nbsp;<strong>clear positive effect</strong>&nbsp;on departure delays — heavier rainfall is strongly associated with longer delays, likely due to runway and visibility issues.</p>
+<p>Strong winds contribute moderately to delays, possibly due to takeoff/landing safety protocols, but the effect is not dramatic.</p>
+<p>Strong winds contribute moderately to delays, possibly due to takeoff/landing safety protocols, but the effect is not dramatic.</p>
+<p>Together, these patterns confirm that&nbsp;<strong>adverse weather conditions directly contribute to longer departure delays</strong>.</p>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

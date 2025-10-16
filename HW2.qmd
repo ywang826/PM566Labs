@@ -1,0 +1,422 @@
+---
+title: "HW2"
+author: "Yi Wang"
+format: html
+editor: visual
+---
+
+1.  (7 points) Find the top 10 most popular destinations in the flights data. How many flights went to each
+
+    ```{r}
+    library(nycflights13)
+    library(dplyr)
+
+    top10_dests <- flights %>%
+      count(dest, sort = TRUE) %>%
+      slice_max(n, n = 10)
+
+    print(top10_dests)
+
+    ```
+
+2.  (10 points) Create two new categorical variables in `flights` based on the departure time (`dep_time`), and arrival time (`arr_time`). These new variables should have four categories: “early morning” for 12am to 6am, “morning” for 6am to 12pm, “afternoon” for 12pm to 6pm, and “evening” for 6pm to 12am. Show barplots of both of these new variables. What percentage of flights were “red eye” flights? We’ll define these as flights that depart in “afternoon” or “evening” and arrive in “early morning” or “morning.”
+
+    ```{r}
+    library(nycflights13)
+    library(dplyr)
+    library(ggplot2)
+
+    flights_q2 <- flights %>%
+      filter(!is.na(dep_time), !is.na(arr_time)) %>%   
+      mutate(
+        dep_time_cat = case_when(
+          dep_time < 600  ~ "early morning",
+          dep_time < 1200 ~ "morning",
+          dep_time < 1800 ~ "afternoon",
+          dep_time < 2400 ~ "evening",
+          TRUE ~ NA_character_
+        ),
+        arr_time_cat = case_when(
+          arr_time < 600  ~ "early morning",
+          arr_time < 1200 ~ "morning",
+          arr_time < 1800 ~ "afternoon",
+          arr_time < 2400 ~ "evening",
+          TRUE ~ NA_character_
+        )
+      ) %>%
+      mutate(
+        
+        dep_time_cat = factor(dep_time_cat, 
+                              levels = c("early morning","morning","afternoon","evening")),
+        arr_time_cat = factor(arr_time_cat, 
+                              levels = c("early morning","morning","afternoon","evening"))
+      )
+
+
+    ggplot(flights_q2, aes(x = dep_time_cat)) +
+      geom_bar(fill = "steelblue") +
+      labs(title = "Distribution of Departure Times",
+           x = "Departure Period", y = "Number of Flights") +
+      theme_minimal()
+
+    ggplot(flights_q2, aes(x = arr_time_cat)) +
+      geom_bar(fill = "darkorange") +
+      labs(title = "Distribution of Arrival Times",
+           x = "Arrival Period", y = "Number of Flights") +
+      theme_minimal()
+
+
+    redeye_summary <- flights_q2 %>%
+      mutate(
+        is_redeye = (dep_time_cat %in% c("afternoon","evening")) &
+                    (arr_time_cat %in% c("early morning","morning"))
+      ) %>%
+      summarise(
+        redeye_n   = sum(is_redeye, na.rm = TRUE),
+        denom_n    = n(),
+        redeye_pct = redeye_n / denom_n
+      )
+
+
+    redeye_summary
+    paste0("Red-eye flights: ", redeye_summary$redeye_n,
+           " / ", redeye_summary$denom_n,
+           " = ", round(100 * redeye_summary$redeye_pct, 2), "%")
+
+    ```
+
+    3.23% of the flights are red-eye.
+
+3.  Where there any planes that flew for multiple airlines? If so, how many were there and which airlines did they fly for?
+
+    ```{r}
+    pairs <- flights %>%
+      filter(!is.na(tailnum), !is.na(carrier)) %>%
+      distinct(tailnum, carrier)
+    pairs_named <- pairs %>%
+      left_join(airlines, by = "carrier")
+    multi_planes <- pairs_named %>%
+      group_by(tailnum) %>%
+      summarise(
+        n_carriers   = n_distinct(carrier),
+        carriers     = paste(sort(unique(carrier)), collapse = ", "),
+        carrier_names = paste(sort(unique(name)), collapse = " | "),
+        .groups = "drop"
+      ) %>%
+      filter(n_carriers > 1) %>%
+      arrange(desc(n_carriers), tailnum)
+
+    n_planes <- nrow(multi_planes)
+    n_planes
+
+    multi_planes
+
+    ```
+
+    In total, 17 aircraft were identified as operating under multiple carriers.\
+    They were associated with two specific airline combinations:\
+    eight aircraft flew for both Endeavor Air Inc. and ExpressJet Airlines Inc.,\
+    while nine aircraft flew for both AirTran Airways Corporation and Delta Air Lines Inc.
+
+4.  (7 points) In the figure above, there is a missing relationship between `weather` and `airports`. What is the relationship and how should it appear in the diagram?
+
+    \
+    Each weather observation is recorded at a specific airport identified by its origin code, which corresponds to the faa field in the airports dataset.\
+    In the diagram, this should be represented as: weather.origin → airports.faa.
+
+    For the rest of this assignment, the primary question you should keep in mind is this:
+
+> Which weather phenomena have the most impact on flight delays?
+
+Don’t try to answer it now, but use this question to guide your exploratory data analysis.
+
+5.  (7 points) In order to address our primary question, we want to prepare a tidy dataset (a single data frame). This will consist of information from the `flights` and `weather` data. The `year`, `month`, `day`, `hour`, and `origin` variables from `weather` provide *almost* enough information to give each observation a unique value. Create a new variable in the weather dataset by pasting together those 5 variables, then determine how many duplicated values there are and explain why.
+
+Now merge the `flights` data and the `weather` data so that each flight contains information about the weather at its **departure airport** at the time it was **scheduled** to take off. You’ll want to use the variables `time_hour` and `origin` in order to do this.
+
+```{r}
+weather_keyed <- weather %>%
+mutate(idx = paste(year, month, day, hour, origin, sep = "_"))
+
+dup_n <- sum(duplicated(weather_keyed$idx))
+dup_n
+
+weather_dups <- weather_keyed %>%
+group_by(idx) %>%
+filter(n() > 1) %>%
+arrange(idx)
+
+weather_dups %>% ungroup() %>% count(idx, sort = TRUE) %>% head()
+
+fl_weather <- flights %>%
+left_join(weather %>% select(origin, time_hour, temp, dewp, humid, wind_dir, wind_speed, wind_gust,
+precip, pressure, visib),
+by = c("origin", "time_hour"))
+
+fl_weather %>% summarize(across(c(temp:visib), ~mean(is.na(.x)))) %>% t()
+```
+
+We found 3 duplicated keys, all occurring on 2013-11-03 at 01:00 for EWR, JFK, and LGA.This is explained by the end of Daylight Saving Time (fall-back), which causes the 1am hour to occur twice, so multiple weather observations share the same (year, month, day, hour, origin) combination.
+
+6.  (20 points) On this merged dataset, perform steps 2-5 of the EDA checklist presented in class. Remember the context provided by our primary question above.
+
+    ```{r}
+
+    dim(fl_weather)      
+    nrow(fl_weather)     
+    ncol(fl_weather)     
+
+
+    str(fl_weather)     
+    summary(fl_weather)  
+
+
+    head(fl_weather, 5)  
+    tail(fl_weather, 5) 
+
+    table(fl_weather$origin)
+    head(select(fl_weather, origin, time_hour, temp, precip, wind_speed, visib))
+
+    hist(fl_weather$dep_delay, 
+         main = "Distribution of Departure Delays",
+         xlab = "Departure delay (minutes)", col = "steelblue")
+
+    hist(fl_weather$wind_speed, 
+         main = "Distribution of Wind Speed",
+         xlab = "Wind speed (mph)", col = "orange")
+
+    hist(fl_weather$precip, 
+         main = "Distribution of Precipitation",
+         xlab = "Precipitation (inches)", col = "lightblue")
+
+    boxplot(fl_weather$dep_delay ~ fl_weather$origin,
+            main = "Departure Delay by Airport",
+            xlab = "Origin Airport", ylab = "Delay (minutes)",
+            col = c("lightblue", "lightgreen", "lightpink"))
+
+    ```
+
+    The distribution of departure delays is highly right-skewed, showing that most flights depart on time or with only minor delays, while a small number of flights experience extreme delays over 200 minutes.\
+    Wind speed generally ranges from 0 to 20 mph, with most values between 4–14 mph, indicating that strong winds are relatively rare.\
+    Precipitation is concentrated near zero, suggesting that most flights occur under clear conditions with little or no rainfall.\
+    The boxplot of departure delays by airport shows similar patterns across EWR, JFK, and LGA, although JFK displays slightly greater variability, possibly due to heavier traffic.\
+    Overall, these results indicate that flight delays are typically short and infrequent, but adverse weather events such as high wind or precipitation can increase the likelihood and magnitude of delays.
+
+7.  (15 points) Calculate the average departure delay for each **day** (Hint: think about which variables you need in order to do this!). Which day had the worst average length of delay for departures? Now calculate the averages by **day** and **origin**. Which airport had the worst single day for delays and when was it? Now calculate the averages by **hour** and **origin**. Which airport had the worst single hour for delays (and when was it)?
+
+    ```{r}
+    library(dplyr)
+    library(lubridate)
+
+    fl_weather <- fl_weather %>% filter(!is.na(dep_delay))  
+
+    daily_delay <- fl_weather %>%
+      group_by(year, month, day) %>%
+      summarise(avg_dep_delay = mean(dep_delay, na.rm = TRUE), .groups = "drop") %>%
+      arrange(desc(avg_dep_delay))
+
+    worst_day <- daily_delay %>% slice_max(avg_dep_delay, n = 1)
+    worst_day
+
+    daily_origin_delay <- fl_weather %>%
+      group_by(year, month, day, origin) %>%
+      summarise(avg_dep_delay = mean(dep_delay, na.rm = TRUE), .groups = "drop") %>%
+      arrange(desc(avg_dep_delay))
+
+    worst_day_origin <- daily_origin_delay %>% slice_max(avg_dep_delay, n = 1)
+    worst_day_origin
+
+    hourly_origin_delay <- fl_weather %>%
+      group_by(year, month, day, hour, origin) %>%
+      summarise(avg_dep_delay = mean(dep_delay, na.rm = TRUE), .groups = "drop") %>%
+      arrange(desc(avg_dep_delay))
+
+    worst_hour_origin <- hourly_origin_delay %>% slice_max(avg_dep_delay, n = 1)
+    worst_hour_origin
+
+    ```
+
+    The daily analysis revealed that March 8 had the longest average departure delay, reaching 83.54 minutes.\
+    Examining delays by both day and airport, the worst case was recorded at LGA on March 8, where flights were delayed an average of 105.72 minutes.\
+    On a finer time scale, the worst single-hour delay occurred at LGA on July 28 at 9 PM, with an average delay of 279.67 minutes, indicating a severe congestion or weather event during that time.
+
+8.  (7 points) Compute the average delay by destination, then add that information to the `airports` data frame. Make a map showing the spatial distribution of delays (you can make it however you like, but we recommend using either `ggplot` or `leaflet`). Use the color of the points to display the average delay for each airport.
+
+    ```{r}
+    library(dplyr)
+    library(leaflet)
+    library(viridis)
+    library(nycflights13)
+
+    avg_by_dest <- flights %>%
+      filter(!is.na(arr_delay)) %>%
+      group_by(dest) %>%
+      summarise(
+        avg_arr_delay = mean(arr_delay, na.rm = TRUE),
+        n = n(),
+        .groups = "drop"
+      ) %>%
+      left_join(airports, by = c("dest" = "faa")) %>%
+      filter(!is.na(lat), !is.na(lon))
+
+    pal <- colorNumeric("viridis", domain = avg_by_dest$avg_arr_delay)
+
+    leaflet(avg_by_dest) %>%
+      addProviderTiles(providers$CartoDB.Positron) %>%
+      addCircleMarkers(
+        lng = ~lon, lat = ~lat,
+        radius = ~pmax(3, pmin(10, sqrt(n)/15)),  
+        fillColor = ~pal(avg_arr_delay),
+        color = "black", weight = 0.3,
+        fillOpacity = 0.9,
+        popup = ~paste0(
+          "<b>", name, "</b><br>",
+          "Avg Arrival Delay: ", round(avg_arr_delay, 1), " min<br>",
+          "Flights: ", n
+        )
+      ) %>%
+      addLegend(
+        "bottomright",
+        pal = pal, values = ~avg_arr_delay,
+        title = "Avg Arrival Delay (min)",
+        opacity = 1
+      )
+
+    ```
+
+9.  (20 points) Finally, create as many plots and summary statistics as needed to answer the primary question above.
+
+```{r}
+library(dplyr)
+library(ggplot2)
+library(tidyr)
+library(broom)
+
+#1. Correlation Analysis
+data <- fl_weather %>%
+  filter(!is.na(dep_delay), !is.na(arr_delay)) %>%
+  select(dep_delay, arr_delay, temp, dewp, humid,
+         wind_speed, wind_gust, precip, pressure, visib)
+
+# Departure delay correlations
+dep_corr <- data %>%
+  summarise(across(temp:visib, ~cor(dep_delay, .x, use = "complete.obs"))) %>%
+  tidyr::pivot_longer(everything(), names_to = "Variable", values_to = "DepDelay_Corr")
+
+# Arrival delay correlations
+arr_corr <- data %>%
+  summarise(across(temp:visib, ~cor(arr_delay, .x, use = "complete.obs"))) %>%
+  tidyr::pivot_longer(everything(), names_to = "Variable", values_to = "ArrDelay_Corr")
+
+
+
+```
+
+```{r}
+#2. Relationship Between Departure and Arrival Delays
+ggplot(data, aes(x = dep_delay, y = arr_delay)) +
+  geom_point(alpha = 0.3, color = "steelblue") +
+  geom_smooth(method = "lm", color = "red") +
+  labs(title = "Relationship Between Departure and Arrival Delays",
+       x = "Departure Delay (minutes)",
+       y = "Arrival Delay (minutes)") +
+  theme_minimal()
+
+cor(data$dep_delay, data$arr_delay, use = "complete.obs")
+```
+
+The points cluster closely along the red line, suggesting a strong positive linear relationship. The correlation coefficient (r = 0.91) confirms this strong relationship — when a flight departs late, it almost always arrives late as well.
+
+```{r}
+#3. Visual Exploration of Weather Effects
+#Precipitation
+ggplot(data, aes(x = precip, y = dep_delay)) +
+  geom_point(alpha = 0.3, color = "steelblue") +
+  geom_smooth(method = "lm", color = "red") +
+  labs(title = "Effect of Precipitation on Departure Delays",
+       x = "Precipitation (inches)", y = "Departure Delay (min)")
+
+#Wind Speed
+ggplot(data, aes(x = wind_speed, y = dep_delay)) +
+  geom_point(alpha = 0.3, color = "orange") +
+  geom_smooth(method = "lm", color = "red") +
+  labs(title = "Effect of Wind Speed on Departure Delays",
+       x = "Wind Speed (mph)", y = "Departure Delay (min)")
+
+#Visibility
+ggplot(data, aes(x = visib, y = dep_delay)) +
+  geom_point(alpha = 0.3, color = "purple") +
+  geom_smooth(method = "lm", color = "red") +
+  labs(title = "Effect of Visibility on Departure Delays",
+       x = "Visibility (miles)", y = "Departure Delay (min)")
+
+
+```
+
+The scatter plot shows a **positive relationship** between precipitation and departure delays.
+
+Rain and snow slightly contribute to longer departure delays, but precipitation alone is not a strong predictor.
+
+Wind speed alone does not have a major effect on departure delays, though extreme winds might still cause cancellations or holding patterns.
+
+Low visibility can occasionally cause severe delays, but under normal conditions, visibility does not strongly influence departure time.
+
+Across all three factors, **precipitation** shows the most noticeable (but still weak) effect on departure delays.\
+Wind speed and visibility appear to have minimal influence in this dataset, implying that other factors—such as air traffic, airline operations, and congestion—may play larger roles in determining flight delays.
+
+```{r}
+ggplot(data) +
+  geom_density(aes(x = dep_delay, fill = "Departure"), alpha = 0.4) +
+  geom_density(aes(x = arr_delay, fill = "Arrival"), alpha = 0.4) +
+  scale_fill_manual(values = c("Departure" = "skyblue", "Arrival" = "tomato")) +
+  xlim(-50, 300) +
+  labs(title = "Distribution of Departure and Arrival Delays",
+       x = "Delay (minutes)", fill = "Type") +
+  theme_minimal()
+
+```
+
+This density plot compares the distributions of **departure delays** (blue) and **arrival delays** (red).
+
+While both departure and arrival delays follow a similar skewed pattern, arrival delays tend to be slightly shorter on average, showing airlines’ partial recovery capability during flight.
+
+```{r}
+#4. Comparison of Delay Distributions
+data_bins <- data %>%
+  mutate(
+    precip_bin = cut(precip, breaks = c(-Inf, 0, 0.1, 0.5, Inf),
+                     labels = c("0", "(0,0.1]", "(0.1,0.5]", ">0.5")),
+    wind_bin   = cut(wind_speed, breaks = c(-Inf, 5, 10, 15, 20, Inf),
+                     labels = c("<=5","(5,10]","(10,15]","(15,20]",">20")),
+    visib_bin  = cut(visib, breaks = c(-Inf, 2, 5, 10, Inf),
+                     labels = c("<=2","(2,5]","(5,10]"," >10"))
+  )
+
+# Mean dep_delay by bins
+bin_summary <- list(
+  precip = data_bins %>% group_by(precip_bin) %>%
+    summarise(mean_delay = mean(dep_delay, na.rm = TRUE), n = n(), .groups = "drop"),
+  wind   = data_bins %>% group_by(wind_bin) %>%
+    summarise(mean_delay = mean(dep_delay, na.rm = TRUE), n = n(), .groups = "drop"),
+  visib  = data_bins %>% group_by(visib_bin) %>%
+    summarise(mean_delay = mean(dep_delay, na.rm = TRUE), n = n(), .groups = "drop")
+)
+bin_summary
+
+# Bar plots for bins 
+ggplot(bin_summary$precip, aes(precip_bin, mean_delay)) +
+  geom_col(fill = "steelblue") +
+  labs(title = "Average Departure Delay by Precipitation Bin",
+       x = "Precipitation bin", y = "Average dep delay (min)") +
+  theme_minimal()
+
+
+```
+
+Precipitation has a **clear positive effect** on departure delays — heavier rainfall is strongly associated with longer delays, likely due to runway and visibility issues.
+
+Strong winds contribute moderately to delays, possibly due to takeoff/landing safety protocols, but the effect is not dramatic.
+
+Strong winds contribute moderately to delays, possibly due to takeoff/landing safety protocols, but the effect is not dramatic.
+
+Together, these patterns confirm that **adverse weather conditions directly contribute to longer departure delays**.
