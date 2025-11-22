@@ -1,0 +1,191 @@
+---
+title: "hw4"
+author: "Yi Wang"
+
+format:
+  html:
+    embed-resources: true
+
+execute:
+  warning: false
+  cache: false
+  freeze: auto
+
+fig-width: 7
+fig-height: 4
+---
+
+```{r}
+library(microbenchmark)
+library(parallel)
+library(RSQLite)
+library(DBI)
+```
+
+```{r}
+# Total for each row
+fun1 <- function(mat) {
+  n <- nrow(mat)
+  ans <- double(n) 
+  for (i in 1:n) {
+    ans[i] <- sum(mat[i, ])
+  }
+  ans
+}
+
+fun1alt <- function(mat) {
+  rowSums(mat)
+}
+
+# running cumulative sum by row
+fun2 <- function(mat) {
+  n <- nrow(mat)
+  k <- ncol(mat)
+  ans <- mat
+  for (i in 1:n) {
+    for (j in 2:k) {
+      ans[i,j] <- mat[i, j] + ans[i, j - 1]
+    }
+  }
+  ans
+}
+
+fun2alt <- function(mat) {
+  t(apply(mat, 1, cumsum))
+}
+```
+
+# Question 1 
+
+```{r}
+# Use the data with this code
+set.seed(2315)
+dat <- matrix(rnorm(200 * 100), nrow = 200)
+# Check equality
+all.equal(fun1(dat), fun1alt(dat))
+all.equal(fun2(dat), fun2alt(dat))
+```
+
+```{r}
+# Test for the first
+microbenchmark::microbenchmark(
+  fun1(dat),
+  fun1alt(dat), unit = "relative"
+)
+# Test for the second
+microbenchmark::microbenchmark(
+  fun2(dat),
+  fun2alt(dat), unit = "relative"
+)
+```
+
+For fun1, the original loop-based implementation is significantly slower. The benchmark shows that fun1alt(), which uses the vectorized rowSums() function, is approximately 15 times faster than the original version. This improvement results from removing the explicit R-level loop and relying on optimized internal C code. For fun2, the optimized version fun2alt() is also substantially faster. The benchmark indicates that fun2alt() achieves about a 3-fold speedup compared to the original nested-loop implementation. By using apply() with cumsum(), we leverage vectorized operations that drastically reduce overhead. Overall, the vectorized implementations provide major speed improvements while producing identical numerical results.
+
+## Make things run faster with parallel computing
+
+```{r}
+sim_pi <- function(n = 1000, i = NULL) {
+  p <- matrix(runif(n*2), ncol = 2)
+  mean(rowSums(p^2) < 1) * 4
+}
+
+# Here is an example of the run
+set.seed(156)
+sim_pi(1000) # 3.132
+```
+
+```{r}
+# This runs the simulation a 4,000 times, each with 10,000 points
+set.seed(1231)
+system.time({
+  ans <- unlist(lapply(1:4000, sim_pi, n = 10000))
+  print(mean(ans))
+})
+```
+
+# Question 2
+
+```{r}
+cl <- makeCluster(4)
+
+clusterExport(cl, varlist = c("sim_pi"))
+
+set.seed(1231)
+system.time({
+  ans <- unlist(parLapply(cl, 1:4000, sim_pi, n = 10000))
+  print(mean(ans))
+})
+stopCluster(cl)
+```
+
+The parallel version using parLapply() completed in 0.255 seconds, whereas the serial lapply() version required 0.706 seconds.
+
+## SQL
+
+```{r}
+# install.packages(c("RSQLite", "DBI"))
+
+library(RSQLite)
+library(DBI)
+
+# Initialize a temporary in memory database
+con <- dbConnect(SQLite(), ":memory:")
+
+# Download tables
+film <- read.csv("https://raw.githubusercontent.com/ivanceras/sakila/master/csv-sakila-db/film.csv")
+film_category <- read.csv("https://raw.githubusercontent.com/ivanceras/sakila/master/csv-sakila-db/film_category.csv")
+category <- read.csv("https://raw.githubusercontent.com/ivanceras/sakila/master/csv-sakila-db/category.csv")
+
+# Copy data.frames to database
+dbWriteTable(con, "film", film)
+dbWriteTable(con, "film_category", film_category)
+dbWriteTable(con, "category", category)
+
+dbListTables(con) 
+```
+
+# **Question 3**
+
+```{sql, connection=con}
+SELECT
+  rating,
+  COUNT(*) AS n_films
+FROM film
+GROUP BY rating;
+```
+
+# **Question 4**
+
+```{sql, connection=con}
+SELECT 
+  rating,
+  AVG(replacement_cost) AS avg_replacement_cost,
+  AVG(rental_rate)      AS avg_rental_rate
+FROM film
+GROUP BY rating;
+```
+
+# **Question 5**
+
+```{sql, connection=con}
+SELECT 
+  category_id,
+  COUNT(*) AS n_films
+FROM film_category
+GROUP BY category_id;
+
+```
+
+# **Question 6**
+
+```{sql, connection=con}
+SELECT 
+  c.name,
+  COUNT(*) AS n_films
+FROM film_category AS fc
+JOIN category AS c
+  ON fc.category_id = c.category_id
+GROUP BY c.name
+ORDER BY n_films DESC
+LIMIT 1;
+```
